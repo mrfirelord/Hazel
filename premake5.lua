@@ -31,7 +31,7 @@ project "Hazel"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs 
@@ -59,8 +59,9 @@ project "Hazel"
 			"HZ_BUILD_DLL"
 		}
 
-		postbuildcommands {
-			"xcopy /y ..\\bin\\".. outputdir .. "\\Hazel\\Hazel.dll ..\\bin\\" .. outputdir .. "\\Sandbox\\"
+		postbuildcommands
+		{
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
 		}
 		
 	filter "configurations:Debug"
@@ -86,7 +87,7 @@ project "Sandbox"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs
