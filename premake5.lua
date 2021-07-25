@@ -58,6 +58,10 @@ project "Hazel"
 			"HZ_PLATFORM_WINDOWS",
 			"HZ_BUILD_DLL"
 		}
+
+		postbuildcommands {
+			"xcopy /y ..\\bin\\".. outputdir .. "\\Hazel\\Hazel.dll ..\\bin\\" .. outputdir .. "\\Sandbox\\"
+		}
 		
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
