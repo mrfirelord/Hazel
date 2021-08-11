@@ -18,4 +18,6 @@
 #include "Hazel/Renderer/Shader.h"
 #include "Hazel/Renderer/VertexArray.h"
 
+#include "Hazel/Core/Timestep.h"
+
 #include "Hazel/EntryPoint.h"
