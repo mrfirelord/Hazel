@@ -5,11 +5,6 @@
 #include "Hazel/LayerStack.h"
 #include "Hazel/Events/ApplicationEvent.h"
 
-#include "Hazel/Renderer/Buffer.h"
-#include "Hazel/Renderer/Shader.h"
-#include "Hazel/Renderer/VertexArray.h"
-#include "Hazel/Renderer/OrthographicCamera.h"
-
 #include "Hazel/ImGui/ImGuiLayer.h"
 
 #include "Window.h"
