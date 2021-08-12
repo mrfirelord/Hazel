@@ -1,9 +1,12 @@
 #include <hzpch.h>
 #include <Hazel.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Hazel::Layer {
 public:
@@ -84,7 +87,7 @@ public:
 			}
 		)";
 
-		m_Shader.reset(new Hazel::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(Hazel::Shader::Create(vertexSrc, fragmentSrc));
 
 		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
@@ -109,15 +112,15 @@ public:
 			layout(location = 0) out vec4 color;
 			in vec3 v_Position;
 
-			uniform vec4 u_Color;
+			uniform vec3 u_Color;
 
 			void main()
 			{
-				color = u_Color;
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
-		m_FlatColor.reset(new Hazel::Shader(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColor.reset(Hazel::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 	}
 
 	void OnUpdate(Hazel::Timestep ts) override {
@@ -146,18 +149,13 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0), glm::vec3(0.1));
 
-		glm::vec4 redColor(0.8f, 0.2f, 0.2f, 1.0);
-		glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0);
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColor)->Bind();
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColor)->UploadUniformFloat3("u_Color", m_SquareColor);
+
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::vec3 pos(x * 0.11, y * 0.11, 0);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0), pos) * scale;
-				
-				if (x % 2 == 0)
-					m_FlatColor->UploadUniformFloat4("u_Color", redColor);
-				else
-					m_FlatColor->UploadUniformFloat4("u_Color", blueColor);
-
 				Hazel::Renderer::Submit(m_FlatColor, m_SquareVA, transform);
 			}
 		}
@@ -168,7 +166,9 @@ public:
 	}
 
 	void OnImGuiRender() override {
-
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 
 	void OnEvent(Hazel::Event& event) override {
@@ -190,6 +190,8 @@ private:
 	glm::vec3 m_CameraPosition;
 	float m_Rotation;
 	float m_CameraSpeed = 1.0;
+
+	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };
 
 class Sandbox : public Hazel::Application {
