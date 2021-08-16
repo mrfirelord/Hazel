@@ -10,6 +10,7 @@ namespace Hazel {
 		virtual void Bind() const {};
 		virtual void Unbind() const {};
 
+		static Shader* Create(const std::string& filepath);
 		static Shader* Create(const std::string& vectorSource, const std::string& fragmentSource);
 	};
 }
