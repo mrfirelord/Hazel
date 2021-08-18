@@ -1,8 +1,8 @@
 #include "hzpch.h"
 #include "Application.h"
-#include "Input.h"
+#include "Hazel/Core/Input.h"
 
-#include "Hazel/Log.h"
+#include "Hazel/Core/Log.h"
 #include "Hazel/Renderer/Renderer.h"
 #include "Hazel/Renderer/RenderCommand.h"
 

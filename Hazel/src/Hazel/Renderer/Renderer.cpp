@@ -1,7 +1,7 @@
 #include "hzpch.h"
 #include "Renderer.h"
 
-#include "RenderCommand.h"
+#include "Hazel/Renderer/RenderCommand.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Hazel {
