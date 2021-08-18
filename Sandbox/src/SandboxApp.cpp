@@ -10,7 +10,7 @@
 
 class ExampleLayer : public Hazel::Layer {
 public:
-    ExampleLayer() : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0), m_Rotation(0) {
+    ExampleLayer() : Layer("Example"), m_CameraController(1.5f, true) {
         m_VertexArray.reset(Hazel::VertexArray::Create());
 
         float vertices[3 * 7] = {
@@ -133,28 +133,12 @@ public:
     }
 
     void OnUpdate(Hazel::Timestep ts) override {
-        if (Hazel::Input::isKeyPressed(HZ_KEY_RIGHT))
-            m_CameraPosition.x += m_CameraSpeed * ts;
-        else if (Hazel::Input::isKeyPressed(HZ_KEY_LEFT))
-            m_CameraPosition.x -= m_CameraSpeed * ts;
-
-        if (Hazel::Input::isKeyPressed(HZ_KEY_UP))
-            m_CameraPosition.y += m_CameraSpeed * ts;
-        else if (Hazel::Input::isKeyPressed(HZ_KEY_DOWN))
-            m_CameraPosition.y -= m_CameraSpeed * ts;
-
-        if (Hazel::Input::isKeyPressed(HZ_KEY_Q))
-            m_Rotation -= 10 * ts;
-        else if (Hazel::Input::isKeyPressed(HZ_KEY_E))
-            m_Rotation += 10 * ts;
-
-        m_Camera.SetPosition(m_CameraPosition);
-        m_Camera.SetRotation(m_Rotation);
+        m_CameraController.OnUpdate(ts);
 
         Hazel::RenderCommand::SetClearColor({ 0.1, 0.1f, 0.1f, 1 });
         Hazel::RenderCommand::Clear();
 
-        Hazel::Renderer::BeginScene(m_Camera);
+        Hazel::Renderer::BeginScene(m_CameraController.GetCamera());
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0), glm::vec3(0.1));
 
@@ -192,6 +176,7 @@ public:
     void OnEvent(Hazel::Event& event) override {
         Hazel::EventDispatcher dispatcher(event);
         dispatcher.Dispatch<Hazel::KeyPressedEvent>(HZ_BIND_EVENT_FN(ExampleLayer::OnKeyPressEvent));
+        m_CameraController.OnEvent(event);
     }
 
     bool OnKeyPressEvent(Hazel::KeyPressedEvent& event) {
@@ -206,10 +191,7 @@ private:
     Hazel::Ref<Hazel::VertexArray> m_SquareVA;
     Hazel::Ref<Hazel::Texture2D> m_Texture, m_ChernoLogoTexture;
 
-    Hazel::OrthographicCamera m_Camera;
-    glm::vec3 m_CameraPosition;
-    float m_Rotation;
-    float m_CameraSpeed = 1.0;
+    Hazel::OrthographicCameraController m_CameraController;
 
     glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };
