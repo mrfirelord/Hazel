@@ -79,7 +79,5 @@ namespace Hazel {
 			if (e.Handled)
 				break;
 		}
-
-		//HZ_CORE_TRACE("{0}", e);
 	}
 }

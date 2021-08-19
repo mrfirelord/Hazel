@@ -5,9 +5,9 @@
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Hazel {
-	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size) {
+	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size) {
 		switch (Renderer::GetAPI()) {
-		case RendererAPI::API::OpenGL:	return new OpenGLVertexBuffer(vertices, size);
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexBuffer>(vertices, size);
 		case RendererAPI::API::None:	HZ_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 		}
 
@@ -19,9 +19,9 @@ namespace Hazel {
 		return uint32_t();
 	}
 
-	IndexBuffer* IndexBuffer::Create(uint32_t* indeces, uint32_t size) {
+	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indeces, uint32_t size) {
 		switch (Renderer::GetAPI()) {
-		case RendererAPI::API::OpenGL:	return new OpenGLIndexBuffer(indeces, size);
+		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLIndexBuffer>(indeces, size);
 		case RendererAPI::API::None:	HZ_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 		}
 
