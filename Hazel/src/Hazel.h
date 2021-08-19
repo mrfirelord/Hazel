@@ -21,5 +21,3 @@
 #include "Hazel/Renderer/VertexArray.h"
 
 #include "Hazel/Core/Timestep.h"
-
-#include "Hazel/Core/EntryPoint.h"

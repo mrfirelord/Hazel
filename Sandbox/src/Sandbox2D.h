@@ -4,6 +4,9 @@
 
 class Sandbox2D : public Hazel::Layer {
 public:
+	Sandbox2D();
+	virtual ~Sandbox2D() = default;
+
 	void OnAttach() override;
 	void OnDetach() override;
 
@@ -11,9 +14,9 @@ public:
 	void OnEvent(Hazel::Event& event) override;
 	void OnImGuiRender() override;
 private:
-	Hazel::Ref<Hazel::Shader> m_Shader;
+	Hazel::Ref<Hazel::Shader> m_FlatColorShader;
 	Hazel::OrthographicCameraController m_CameraController;
-	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
+	Hazel::Ref<Hazel::VertexArray> m_SquareVA;
 
-	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
+	glm::vec4 m_SquareColor = { 0.6f, 0.3f, 0.8f, 1.0f };
 };
