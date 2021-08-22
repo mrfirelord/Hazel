@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Hazel/Renderer/VertexArray.h"
+
 #include <glm/glm.hpp>
-#include "VertexArray.h"
 
 namespace Hazel {
 	class RendererAPI {
@@ -18,6 +19,8 @@ namespace Hazel {
 		virtual void DrawIndexed(const Ref<VertexArray> vertexArray) = 0;
 
 		inline static API GetAPI() { return s_API; }
+
+		static Scope<RendererAPI> Create();
 	private:
 		static API s_API;
 	};

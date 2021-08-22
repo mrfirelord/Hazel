@@ -11,12 +11,13 @@
 namespace Hazel {
 	Application* Application::s_Instance = nullptr;
 
-#define BIND_EVENT_FN(x)std::bind(&Application::x, this, std::placeholders::_1)
 	Application::Application() {
+		HZ_PROFILE_FUNCTION();
+
 		HZ_CORE_ASSERT(!s_Instance, "Application already exists");
 		s_Instance = this;
-		m_Window = Scope<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window = Window::Create();
+		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 		
@@ -24,7 +25,10 @@ namespace Hazel {
 		PushOverlay(m_ImGuiLayer);
 	}
 
-	Application::~Application() = default;
+	Application::~Application()
+	{
+		Renderer::Shutdown();
+	}
 
 	void Application::PushLayer(Layer* layer) {
 		m_LayerStack.PushLayer(layer);

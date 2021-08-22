@@ -6,30 +6,27 @@
 #include <string>
 #include <thread>
 
+#include "Hazel/Core/Log.h"
+
 namespace Hazel {
-	struct ProfileResult
-	{
+	struct ProfileResult {
 		std::string Name;
 		long long Start, End;
 		std::thread::id ThreadID;
 	};
 
-	struct InstrumentationSession
-	{
+	struct InstrumentationSession {
 		std::string Name;
 	};
 
-	class Instrumentor
-	{
+	class Instrumentor {
 	private:
 		std::mutex m_Mutex;
 		InstrumentationSession* m_CurrentSession;
 		std::ofstream m_OutputStream;
 	public:
 		Instrumentor()
-			: m_CurrentSession(nullptr)
-		{
-		}
+			: m_CurrentSession(nullptr) { }
 
 		void BeginSession(const std::string& name, const std::string& filepath = "results.json")
 		{
@@ -92,7 +89,6 @@ namespace Hazel {
 		}
 
 	private:
-
 		void WriteHeader()
 		{
 			m_OutputStream << "{\"otherData\": {},\"traceEvents\":[{}";

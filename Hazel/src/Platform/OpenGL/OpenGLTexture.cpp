@@ -1,7 +1,7 @@
 #include "hzpch.h"
 #include "OpenGLTexture.h"
 
-#include "stb_image.h"
+#include <stb_image.h>
 
 namespace Hazel {
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) : m_Width(width), m_Height(height) {
