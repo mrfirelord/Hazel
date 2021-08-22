@@ -18,14 +18,20 @@ namespace Hazel {
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props) {
+		HZ_PROFILE_FUNCTION();
+
 		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow() {
+		HZ_PROFILE_FUNCTION();
+
 		Shutdown();
 	}
 
 	void WindowsWindow::Init(const WindowProps& props) {
+		HZ_PROFILE_FUNCTION();
+
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -34,6 +40,7 @@ namespace Hazel {
 
 		if (s_GLFWInitialized == 0)
 		{
+			HZ_PROFILE_SCOPE("glfwInit");
 			// TODO: glfwTerminate on system shutdown
 			int success = glfwInit();
 			HZ_CORE_ASSERT(success, "Could not intialize GLFW!");
@@ -46,7 +53,6 @@ namespace Hazel {
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 
-		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -92,7 +98,7 @@ namespace Hazel {
 		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			data.EventCallback(KeyTypedEvent(keycode));
-		});
+			});
 
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -125,15 +131,21 @@ namespace Hazel {
 	}
 
 	void WindowsWindow::Shutdown() {
+		HZ_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 	}
 
 	void WindowsWindow::OnUpdate() {
+		HZ_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled) {
+		HZ_PROFILE_FUNCTION();
+
 		glfwSwapInterval(enabled ? 1 : 0);
 		m_Data.VSync = enabled;
 	}
